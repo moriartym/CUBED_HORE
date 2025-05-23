@@ -86,7 +86,7 @@
 #define DOORV_CLOSE '4'
 #define DOORV_OPEN '5'
 #define WIN_BLOCK '8'
-#define DOORWIDTH 8// changed to 8
+#define DOORWIDTH 24// changed to 8
 
 /*------------------------------STRUCT------------------------------*/
 
