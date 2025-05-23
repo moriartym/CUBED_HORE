@@ -18,12 +18,12 @@ bool is_cell_valid(t_var *data, float x, float y)
     int iy;
     char tile;
 
-    ix = (int)x / TILE_SIZE;
-    iy = (int)y / TILE_SIZE;
-    if (ix < 0 || ix >= data->map.width || iy < 0 || iy >= data->map.height)
+    ix = (int)x / TILE_SIZE_BIG;
+    iy = (int)y / TILE_SIZE_BIG;
+    if (ix < 0 || ix >= data->big_width|| iy < 0 || iy >= data->big_height)
         return false;
-    tile = data->map.arr[iy][ix];
-    return (is_valid_movement(data, tile, x, y));
+    tile = data->big_map[iy][ix];
+    return (is_valid_movement(data, tile));
 }
 
 void resolve_enemy_dist(t_var *data, t_sprite *sp, t_sprite *other)
@@ -71,7 +71,7 @@ void resolve_enemy_collisions(t_var *data, t_sprite *sp)
         sp->dx = other->x - sp->x;
         sp->dy = other->y - sp->y;
         sp->dist_sq = sp->dx * sp->dx + sp->dy * sp->dy;
-        sp->min_dist = 10.0f;
+        sp->min_dist = 4.0f;
         resolve_enemy_dist(data,sp, other);
         i++;
     }
@@ -81,21 +81,13 @@ void move_enemy_towards_player(t_var *data, t_sprite *sp)
 {
     sp->speed = ENEMY_SPEED;
     sp->margin = ENEMY_MARGIN;
-    sp->spx = (int)(sp->x / TILE_SIZE);
-    sp->spy = (int)(sp->y / TILE_SIZE);
+    sp->spx = (int)(sp->x / TILE_SIZE_BIG);
+    sp->spy = (int)(sp->y / TILE_SIZE_BIG);
     sp->spx_left = sp->x - sp->speed - sp->margin;
     sp->spx_right = sp->x + sp->speed + sp->margin;
     sp->spy_up = sp->y - sp->speed - sp->margin;
     sp->spy_down = sp->y + sp->speed + sp->margin;
-    if (sp->is_unstucking)
-    {
-        unstuck_move(data, sp);
-        return ;
-    }
-    enemy_left(data,sp);
-    enemy_right(data,sp);
-    enemy_up(data,sp);
-    enemy_down(data,sp);
+    unstuck_move(data, sp);
     resolve_enemy_collisions(data, sp);
     if (is_player_caught(sp, &data->player, 10.0f))
     {

@@ -79,6 +79,56 @@ void delete_door(t_var *data, int x, int y)
     }
 }
 
+// new
+void create_door_big_map(t_var *data, int y, int x)
+{
+    int i, j;
+    char type = data->map.arr[y][x];
+    int base_y = y * 4;
+    int base_x = x * 4;
+
+    if (type == DOORV_CLOSE)
+    {
+        i = 0;
+        while (i < 4)
+        {
+            data->big_map[base_y + i][base_x + 0] = EMPTY_SPACE;
+            data->big_map[base_y + i][base_x + 1] = DOORV_CLOSE;
+            data->big_map[base_y + i][base_x + 2] = EMPTY_SPACE;
+            data->big_map[base_y + i][base_x + 3] = EMPTY_SPACE;
+            i++;
+        }
+    }
+    else if (type == DOORH_CLOSE)
+    {
+        for (j = 0; j < 4; j++)
+        {
+            data->big_map[base_y + 0][base_x + j] = EMPTY_SPACE;
+            data->big_map[base_y + 3][base_x + j] = EMPTY_SPACE;
+        }
+        for (j = 0; j < 4; j++)
+        {
+            data->big_map[base_y + 1][base_x + j] = DOORH_CLOSE;
+            data->big_map[base_y + 2][base_x + j] =  EMPTY_SPACE;
+        }
+    }
+    print_map_and_enemies(data);
+}
+
+void delete_door_big_map(t_var *data, int y, int x)
+{
+    int i, j;
+    int base_y = y * 4;
+    int base_x = x * 4;
+
+    for (i = 0; i < 4; i++)
+        for (j = 0; j < 4; j++)
+            data->big_map[base_y + i][base_x + j] = EMPTY_SPACE;  // empty space pattern
+    
+    print_map_and_enemies(data);
+}
+
+
 void create_door(t_var *data)
 {
     char *tile;
@@ -100,13 +150,53 @@ void create_door(t_var *data)
             else
                 *tile = DOORV_CLOSE;
             add_door(data, tile_in_front_x, tile_in_front_y, tile);
+            create_door_big_map(data, tile_in_front_y, tile_in_front_x); // ← NEW
         }
         else if (*tile == DOORH_CLOSE || *tile == DOORH_OPEN || *tile == DOORV_CLOSE || *tile == DOORV_OPEN)
         {
             *tile = EMPTY_SPACE;
             delete_door(data, tile_in_front_x, tile_in_front_y);
+            delete_door_big_map(data, tile_in_front_y, tile_in_front_x);
         }
     }
+}
+
+void update_door_big_map(t_var *data, int y, int x)
+{
+    int i, j;
+    char type = data->map.arr[y][x];
+    int base_y = y * 4;
+    int base_x = x * 4;
+
+    // DOORH_OPEN → 0330 pattern
+    if (type == DOORV_OPEN)
+    {
+        for (i = 0; i < 4; i++)
+        {
+            for (j = 0; j < 4; j++)
+                data->big_map[base_y + i][base_x + j] = EMPTY_SPACE;
+        }
+        for (j = 1; j <= 1; j++)
+        {
+            data->big_map[base_y + 0][base_x + j] = DOORV_OPEN;
+            data->big_map[base_y + 3][base_x + j] = DOORV_OPEN;
+        }
+    }
+    // DOORV_OPEN → 5005 pattern
+    else if (type == DOORH_OPEN)
+    {
+        for (i = 0; i < 4; i++)
+        {
+            for (j = 0; j < 4; j++)
+                data->big_map[base_y + i][base_x + j] = EMPTY_SPACE;
+        }
+        for (i = 1; i <= 1; i++)
+        {
+            data->big_map[base_y + i][base_x + 0] = DOORH_OPEN;
+            data->big_map[base_y + i][base_x + 3] = DOORH_OPEN;
+        }
+    }
+    print_map_and_enemies(data);
 }
 
 void open_door(t_var *data)
@@ -123,11 +213,13 @@ void open_door(t_var *data)
         if (*tile == DOORH_CLOSE || *tile == DOORV_CLOSE)
         {
             *tile += 1;
+            update_door_big_map(data, tile_in_front_y, tile_in_front_x);
             printf("%c: Door Opened\n", *tile);
         }
         else if (*tile == DOORH_OPEN || *tile == DOORV_OPEN)
         {
             *tile -= 1;
+            create_door_big_map(data, tile_in_front_y, tile_in_front_x); // restore closed pattern
             printf("%c: Door Closed\n", *tile);
         }
     }

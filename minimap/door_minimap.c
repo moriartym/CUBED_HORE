@@ -1,26 +1,19 @@
 #include "../cub3d.h"
 
-void draw_vertical_door(t_img *img, int x, int y, int door_color)
+void check_map_door(t_var *data, int x, int y, int draw_x, int draw_y)
 {
-    int by;
-    int bx;
+    char tile;
 
-    by = 0;
-    while (by < TILE_SIZE)
-    {
-        bx = 0;
-        while (bx < TILE_SIZE)
-        {
-            if (bx >= (TILE_SIZE - DOORWIDTH) / 2 && bx < (TILE_SIZE + DOORWIDTH) / 2)
-                my_mlx_pixel_put(img, x + bx, y + by, door_color);
-            else
-                my_mlx_pixel_put(img, x + bx, y + by, EMPTY_COLOR);
-            bx++;
-        }
-        by++;
-    }
+    tile = data->map.arr[y][x];
+    if (tile == DOORH_CLOSE)
+        draw_horizontal_door(&data->image, draw_x, draw_y, DOOR_COLOR);
+    else if (tile == DOORV_CLOSE)
+        draw_vertical_door(&data->image, draw_x, draw_y, DOOR_COLOR);
+    else if (tile == DOORH_OPEN)
+        draw_horizontal_door(&data->image, draw_x, draw_y, DOOR_OPEN_COLOR);
+    else if (tile == DOORV_OPEN)
+        draw_vertical_door(&data->image, draw_x, draw_y, DOOR_OPEN_COLOR);
 }
-
 void draw_horizontal_door(t_img *img, int x, int y, int door_color)
 {
     int by;
@@ -32,7 +25,30 @@ void draw_horizontal_door(t_img *img, int x, int y, int door_color)
         bx = 0;
         while (bx < TILE_SIZE)
         {
-            if (by >= (TILE_SIZE - DOORWIDTH) / 2 && by < (TILE_SIZE + DOORWIDTH) / 2)
+            if (by >= TILE_SIZE / 4 && by < TILE_SIZE / 4 + DOORWIDTH)
+                my_mlx_pixel_put(img, x + bx, y + by, door_color);
+            else
+                my_mlx_pixel_put(img, x + bx, y + by, EMPTY_COLOR);
+            bx++;
+        }
+        by++;
+    }
+}
+
+void draw_vertical_door(t_img *img, int x, int y, int door_color)
+{
+    int by;
+    int bx;
+    int door_column;
+
+    door_column = TILE_SIZE/4;
+    by = 0;
+    while (by < TILE_SIZE)
+    {
+        bx = 0;
+        while (bx < TILE_SIZE)
+        {
+            if (bx >= door_column && bx < door_column + DOORWIDTH)
                 my_mlx_pixel_put(img, x + bx, y + by, door_color);
             else
                 my_mlx_pixel_put(img, x + bx, y + by, EMPTY_COLOR);

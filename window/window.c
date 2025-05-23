@@ -16,7 +16,7 @@ int render(t_var *data)
         show_win_screen(data);
     else if (data->state.state == RETRY)
     {
-        re_init(data);
+        re_init(data); // bigmap
         print_map_and_enemies(data);//DEBUG
     }
     else

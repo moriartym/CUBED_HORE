@@ -105,8 +105,7 @@ void init_sprites(t_var *data)
     {
         data->sprites[x] = (t_sprite){0};
         data->save.sprites[x] = (t_sprite){0};
-        data->sprites[x].is_unstucking = 1;
-        data->save.sprites[x].is_unstucking = 1;
+
         x++;
     }
     place_enemy(data, &bfs);    

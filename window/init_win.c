@@ -27,16 +27,18 @@ void change_to_win(t_var *data, t_bfs *bfs, int index)
         x = 0;
         while (x < data->map.width)
         {
-            if (bfs->reachable[y][x] == true && !(y == bfs->ipy && x == bfs->ipx))
-                i++;
-            if (i == index)
+            if (bfs->reachable[y][x] == true &&
+                data->map.arr[y][x] == EMPTY_SPACE &&
+                !(y == bfs->ipy && x == bfs->ipx))
             {
-                x = (int) data->player.px / TILE_SIZE;
-                y = (int) data->player.py / TILE_SIZE - 5;
-                data->map.arr[y][x] = WIN_BLOCK;
-                data->win_sprite.x = x * TILE_SIZE + 0.5 * TILE_SIZE;
-                data->win_sprite.y = y * TILE_SIZE + 0.5 * TILE_SIZE;
-                return ;
+                if (i == index)
+                {
+                    data->map.arr[y][x] = WIN_BLOCK;
+                    data->win_sprite.x = x * TILE_SIZE + 0.5 * TILE_SIZE;
+                    data->win_sprite.y = y * TILE_SIZE + 0.5 * TILE_SIZE;
+                    return ;
+                }
+                i++;
             }
             x++;
         }

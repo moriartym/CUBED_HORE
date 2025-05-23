@@ -14,7 +14,6 @@ void copy_sprites_save(t_var *data)
         data->sprites[i] = (t_sprite){0};
         data->sprites[i].x = data->save.sprites[i].x;
         data->sprites[i].y = data->save.sprites[i].y;
-        data->sprites[i].is_unstucking = 1;
 		i++;
 	}
 }
@@ -27,6 +26,8 @@ void re_init(t_var *data)
     data->map.arr = ft_copy_arr(data->save.map); // save copy array first
     if (!data->map.arr)
         handle_error(NULL, "malloc failed", &data->map, data);
+    ft_free_2d(&data->big_map);
+    create_big_map(data);
     init_player(data);
     copy_sprites_save(data);
     init_minimap_offset(data);

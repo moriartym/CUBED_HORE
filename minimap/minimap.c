@@ -24,6 +24,11 @@ void draw_map(t_var *data, int x, int y, int draw_x, int draw_y)
     int color;
     char tile;
 
+    if (y < 0 || y >= data->map.height || x < 0 || x >= data->map.width)
+    {
+        draw_tile(&data->image, draw_x, draw_y, BLACK_COLOR);
+        return;
+    }
     tile = data->map.arr[y][x];
     if (tile == EMPTY_SPACE)
         color = EMPTY_COLOR;
@@ -32,18 +37,11 @@ void draw_map(t_var *data, int x, int y, int draw_x, int draw_y)
     else if (tile == DOORH_CLOSE || tile == DOORV_CLOSE 
         || tile == DOORH_OPEN || tile == DOORV_OPEN)
     {
-        if (tile == DOORH_CLOSE)
-            draw_horizontal_door(&data->image, draw_x, draw_y, DOOR_COLOR);
-        else if (tile == DOORV_CLOSE)
-            draw_vertical_door(&data->image, draw_x, draw_y, DOOR_COLOR);
-        else if (tile == DOORH_OPEN)
-            draw_horizontal_door(&data->image, draw_x, draw_y, DOOR_OPEN_COLOR);
-        else if (tile == DOORV_OPEN)
-            draw_vertical_door(&data->image, draw_x, draw_y, DOOR_OPEN_COLOR);
+        check_map_door(data , x,y, draw_x, draw_y);
         return ;
     }
     else
-        color = EMPTY_COLOR;
+        color = BLACK_COLOR;
     draw_tile(&data->image, draw_x, draw_y, color);
 }
 
@@ -70,14 +68,14 @@ void map_shift(t_var *data)
 
 void clamp_map(t_var *data)
 {
-    if (data->minimap_offset_x < 0)
-        data->minimap_offset_x = 0;
-    if (data->minimap_offset_y < 0)
-        data->minimap_offset_y = 0;
     if (data->minimap_offset_x + MINIMAP_TILE > data->map.max_length)
         data->minimap_offset_x = data->map.max_length - MINIMAP_TILE;
+    if (data->minimap_offset_x < 0)
+        data->minimap_offset_x = 0;
     if (data->minimap_offset_y + MINIMAP_TILE > data->map.height)
         data->minimap_offset_y = data->map.height - MINIMAP_TILE;
+    if (data->minimap_offset_y < 0)
+        data->minimap_offset_y = 0;
 }
 
 

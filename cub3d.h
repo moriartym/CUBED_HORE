@@ -36,7 +36,7 @@
 #   define WINDOW_WIDTH 1920
 #   define WINDOW_HEIGHT 1088
 # define MINIMAP_SIZE 256
-# define ENEMY_SPEED 0.25f
+# define ENEMY_SPEED 0.35f
 
 // # define MINIMAP_SIZE 128
 // #define WINDOW_WIDTH 960
@@ -50,6 +50,7 @@
 #define DOOR_OPEN_COLOR 0xA52A2A
 #define EMPTY_COLOR 0x404040
 #define WIN_COLOR 0xFFD700
+#define BLACK_COLOR 0x000000 
 #define DOOR_SIDE_COLOR "242,185,179"
 
 # define MINIMAP_TILE 8
@@ -59,6 +60,7 @@
 #define FLOOR_COLOR 0x222222
 
 #define TILE_SIZE  32
+#define TILE_SIZE_BIG  (TILE_SIZE/4)
 #define TILE_SIZE_TEXTURE  64
 
 #define PI  3.141592653589793238462643383279502884197
@@ -74,7 +76,7 @@
 #define MOUSE_SENSITIVITY 0.1
 
 #define SPRITE_SIZE 10
-#define ENEMY_MARGIN 5.0f
+#define ENEMY_MARGIN 4.0f
 #define SPRITE_SIZE_MAP 2
 #define ENEMY_COLOR 0xFFFF00
 # define MINIMAP_TILE_SIZE (MINIMAP_SIZE / MINIMAP_TILE)
@@ -86,7 +88,7 @@
 #define DOORV_CLOSE '4'
 #define DOORV_OPEN '5'
 #define WIN_BLOCK '8'
-#define DOORWIDTH 24// changed to 8
+#define DOORWIDTH 8// changed to 8
 
 /*------------------------------STRUCT------------------------------*/
 
@@ -250,7 +252,6 @@ typedef struct s_sprite {
     float spx_right;
     float spy_up;
     float spy_down;
-	int is_unstucking;
 } t_sprite;
 
 typedef struct s_direction {
@@ -435,6 +436,9 @@ typedef struct s_save
 typedef struct s_var {
     void *mlx;
     void *win;
+    char **big_map; // clean this
+    int big_width;
+    int big_height;
     t_save save;
 	t_map	map;
 	t_img   image;
@@ -578,6 +582,7 @@ void draw_enemies_loop(t_var *data, t_emini *mini);
 // from door_minimap.c
 void draw_vertical_door(t_img *img, int x, int y, int door_color);
 void draw_horizontal_door(t_img *img, int x, int y, int door_color);
+void check_map_door(t_var *data, int x, int y, int draw_x, int draw_y);
 
 // froom win_minimap.c
 void draw_one_winning_tile(t_var *data, int draw_x, int draw_y);
@@ -600,7 +605,7 @@ int get_front_tile_x(t_var *data);
 int get_front_tile_y(t_var *data);
 
 // from update_movement.c
-bool is_valid_movement(t_var *data, char tile, float nextX, float nextY);
+bool is_valid_movement(t_var *data, char tile);
 void update_movement(t_var *data);
 void movement_init(t_var *data, t_movestat *movestat);
 void movement_ws(t_var *data, t_movestat *movestat);
@@ -634,7 +639,7 @@ void cast_vertical (t_var* data, t_ray* ray);
 void vertical_dof(t_var* data, t_ray* ray);
 void cast_horizontal (t_var *data, t_ray * ray);
 void horizontal_dof(t_var* data, t_ray* ray);
-bool is_wall(t_map *map, int x, int y, int notWall);
+bool is_wall(t_var *data, int x, int y, int notWall);
 void adjust_hit_tile(t_var *data, t_ray *ray);
 
 // from textures.c
@@ -707,7 +712,7 @@ void screen_draw(t_var *data, t_edraw *draw);
 void draw_sprites(t_var *data);
 
 void print_map_and_enemies(t_var *data);
-void draw_horizontal_door(t_img *img, int x, int y, int door_color);
-void draw_vertical_door(t_img *img, int x, int y, int door_color);
 
+void create_big_map(t_var *data);
+void create_door_big_map(t_var *data, int y, int x);
 #endif

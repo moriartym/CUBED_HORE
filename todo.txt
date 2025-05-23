@@ -4,6 +4,6 @@ BIG MAP CHECK
 
 WINNING TILES ON GIF
 
-BFS DOOR - create minimap 8x8
-
 DOOR CREATE AND CLOSE ERROR
+
+// raycast on door
