@@ -77,6 +77,7 @@
 #define ENEMY_MARGIN 5.0f
 #define SPRITE_SIZE_MAP 2
 #define ENEMY_COLOR 0xFFFF00
+# define MINIMAP_TILE_SIZE (MINIMAP_SIZE / MINIMAP_TILE)
 
 #define EMPTY_SPACE	'0'
 #define WALL	'1'
@@ -85,7 +86,7 @@
 #define DOORV_CLOSE '4'
 #define DOORV_OPEN '5'
 #define WIN_BLOCK '8'
-#define DOORWIDTH 4
+#define DOORWIDTH 8// changed to 8
 
 /*------------------------------STRUCT------------------------------*/
 
@@ -261,7 +262,6 @@ typedef struct s_minimap
 {
     int start_x;
     int start_y;
-    int tile_size;
 }   t_minimap;
 
 typedef struct s_line {
@@ -426,7 +426,7 @@ typedef struct s_state
     int state;
 } t_state;
 
-typedef struct s_save // clean this
+typedef struct s_save
 {
     t_sprite *sprites;
     char **map;
@@ -570,6 +570,21 @@ void 	draw_map(t_var *data, int x, int y, int draw_x, int draw_y);
 void 	map_shift(t_var *data);
 void 	clamp_map(t_var *data);
 
+// from enemy_minimap.c
+void draw_enemies_minimap(t_var *data);
+void draw_enemies_init(t_var *data, t_emini *mini, int i);
+void draw_enemies_loop(t_var *data, t_emini *mini);
+
+// from door_minimap.c
+void draw_vertical_door(t_img *img, int x, int y, int door_color);
+void draw_horizontal_door(t_img *img, int x, int y, int door_color);
+
+// froom win_minimap.c
+void draw_one_winning_tile(t_var *data, int draw_x, int draw_y);
+void draw_winning_tile(t_var *data);
+
+
+
 /*------------------------------PLAYER------------------------------*/
 
 // from player.c
@@ -677,11 +692,6 @@ void ebfs_three(t_enemy_bfs *bfs);
 void ebfs_four_helper(char **map,t_enemy_bfs *bfs);
 void ebfs_four(char **map, t_enemy_bfs *bfs);
 
-// from enemy_minimap.c
-void draw_enemies_minimap(t_var *data);
-void draw_enemies_init(t_var *data, t_emini *mini, int i);
-void draw_enemies_loop(t_var *data, t_emini *mini);
-
 // from enemy_draw.c
 float calculate_distance(t_var *data, t_sprite *sp);
 void sort_sprites_by_distance(t_var *data);
@@ -697,5 +707,7 @@ void screen_draw(t_var *data, t_edraw *draw);
 void draw_sprites(t_var *data);
 
 void print_map_and_enemies(t_var *data);
+void draw_horizontal_door(t_img *img, int x, int y, int door_color);
+void draw_vertical_door(t_img *img, int x, int y, int door_color);
 
 #endif

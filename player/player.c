@@ -14,8 +14,8 @@ void player_location(t_var *data, t_drawp *drawp)
     drawp->rel_y = drawp->ipy - data->minimap_offset_y;
     drawp->offset_x = (data->player.px - drawp->ipx * TILE_SIZE) / (float)TILE_SIZE;
     drawp->offset_y = (data->player.py - drawp->ipy * TILE_SIZE) / (float)TILE_SIZE;
-    drawp->draw_x = drawp->rel_x * data->minimap.tile_size + drawp->offset_x * data->minimap.tile_size;
-    drawp->draw_y = drawp->rel_y * data->minimap.tile_size + drawp->offset_y * data->minimap.tile_size;
+    drawp->draw_x = drawp->rel_x * MINIMAP_TILE_SIZE + drawp->offset_x * MINIMAP_TILE_SIZE;
+    drawp->draw_y = drawp->rel_y * MINIMAP_TILE_SIZE + drawp->offset_y * MINIMAP_TILE_SIZE;
 }
 
 void draw_player(t_var *data)

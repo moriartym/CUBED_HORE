@@ -87,7 +87,8 @@ void ebfs_four_helper(char **map,t_enemy_bfs *bfs)
 
         if (bfs->nx >= 0 && bfs->ny >= 0 &&
             bfs->nx < bfs->width && bfs->ny < bfs->height &&
-            !bfs->visited[bfs->ny][bfs->nx] && map[bfs->ny][bfs->nx] == EMPTY_SPACE)
+            !bfs->visited[bfs->ny][bfs->nx] && (map[bfs->ny][bfs->nx] == EMPTY_SPACE 
+            ||  map[bfs->ny][bfs->nx] == WIN_BLOCK))
         {
             bfs->queue_x[bfs->rear] = bfs->nx;
             bfs->queue_y[bfs->rear] = bfs->ny;

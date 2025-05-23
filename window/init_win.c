@@ -31,8 +31,8 @@ void change_to_win(t_var *data, t_bfs *bfs, int index)
                 i++;
             if (i == index)
             {
-                // x = (int) data->player.px / TILE_SIZE;
-                // y = (int) data->player.py / TILE_SIZE - 5;
+                x = (int) data->player.px / TILE_SIZE;
+                y = (int) data->player.py / TILE_SIZE - 5;
                 data->map.arr[y][x] = WIN_BLOCK;
                 data->win_sprite.x = x * TILE_SIZE + 0.5 * TILE_SIZE;
                 data->win_sprite.y = y * TILE_SIZE + 0.5 * TILE_SIZE;

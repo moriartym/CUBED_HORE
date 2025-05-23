@@ -10,8 +10,8 @@ void draw_enemies_init(t_var *data, t_emini *mini, int i)
     mini->rel_y = mini->enemy_tile_y - data->minimap_offset_y;
     mini->offset_x = (mini->ex - mini->enemy_tile_x * TILE_SIZE) / (float)TILE_SIZE;
     mini->offset_y = (mini->ey - mini->enemy_tile_y * TILE_SIZE) / (float)TILE_SIZE;
-    mini->draw_x = mini->rel_x * data->minimap.tile_size + mini->offset_x * data->minimap.tile_size;
-    mini->draw_y = mini->rel_y * data->minimap.tile_size + mini->offset_y * data->minimap.tile_size;
+    mini->draw_x = mini->rel_x * MINIMAP_TILE_SIZE + mini->offset_x * MINIMAP_TILE_SIZE;
+    mini->draw_y = mini->rel_y * MINIMAP_TILE_SIZE + mini->offset_y * MINIMAP_TILE_SIZE;
     mini->radius = SPRITE_SIZE_MAP;
     mini->by = -mini->radius;
 }

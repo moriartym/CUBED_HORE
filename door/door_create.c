@@ -25,6 +25,17 @@ t_door *new_door(t_var *data, int x, int y, char *tile)
     }
     new->next = NULL;
     new->status = tile;
+
+    // Debug print
+    if (new)
+    {
+        printf("Door created at tile (%d, %d)\n", x, y);
+        printf("Door created at tile (%c)\n", *tile);
+        printf("Position: xStart = %f, xEnd = %f, yStart = %f, yEnd = %f\n",
+            new->xStart, new->xEnd, new->yStart, new->yEnd);
+    }
+
+
     return (new);
 }
 

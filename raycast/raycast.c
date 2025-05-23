@@ -52,7 +52,7 @@ void cast_rays(t_var *data, t_ray *ray)
 
     line = (t_line){0};
     rayhit = (t_rayhit){0};
-    tile_size = data->minimap.tile_size;
+    tile_size = MINIMAP_TILE_SIZE;
     if (ray->disH > ray->disV)
     {
         ray->sideH = ray->sideV;

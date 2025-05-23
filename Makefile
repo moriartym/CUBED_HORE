@@ -30,6 +30,9 @@ SRCS_NORMAL = get_next_line/get_next_line.c \
 		window/init_enemy_bfs.c \
 		window/init_retry.c \
 		minimap/minimap.c \
+		minimap/door_minimap.c \
+		minimap/win_minimap.c \
+		minimap/enemy_minimap.c \
 		player/player.c \
 		movement/movement.c \
 		movement/update_movement.c \
@@ -39,7 +42,6 @@ SRCS_NORMAL = get_next_line/get_next_line.c \
 		raycast/raycast_helper.c \
 		raycast/textures.c \
 		enemy/enemy_sprites.c \
-		enemy/enemy_minimap.c \
 		enemy/enemy_draw.c \
 		enemy/enemy_draw_helper.c \
 		enemy/enemy_move.c \

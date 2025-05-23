@@ -18,6 +18,7 @@ void draw_tile(t_img *img, int x, int y, int color)
     }
 }
 
+
 void draw_map(t_var *data, int x, int y, int draw_x, int draw_y)
 {
     int color;
@@ -28,12 +29,19 @@ void draw_map(t_var *data, int x, int y, int draw_x, int draw_y)
         color = EMPTY_COLOR;
     else if (tile == WALL)
         color = WALL_COLOR;
-    else if (tile == DOORH_CLOSE || tile == DOORV_CLOSE)
-        color = DOOR_COLOR;
-    else if (tile == DOORH_OPEN || tile == DOORV_OPEN)
-        color = DOOR_OPEN_COLOR;
-    else if (tile == WIN_BLOCK)
-        color = WIN_COLOR;
+    else if (tile == DOORH_CLOSE || tile == DOORV_CLOSE 
+        || tile == DOORH_OPEN || tile == DOORV_OPEN)
+    {
+        if (tile == DOORH_CLOSE)
+            draw_horizontal_door(&data->image, draw_x, draw_y, DOOR_COLOR);
+        else if (tile == DOORV_CLOSE)
+            draw_vertical_door(&data->image, draw_x, draw_y, DOOR_COLOR);
+        else if (tile == DOORH_OPEN)
+            draw_horizontal_door(&data->image, draw_x, draw_y, DOOR_OPEN_COLOR);
+        else if (tile == DOORV_OPEN)
+            draw_vertical_door(&data->image, draw_x, draw_y, DOOR_OPEN_COLOR);
+        return ;
+    }
     else
         color = EMPTY_COLOR;
     draw_tile(&data->image, draw_x, draw_y, color);
@@ -80,7 +88,6 @@ void create_minimap(t_var *data)
     int y;
 
     y = 0;
-    data->minimap.tile_size = MINIMAP_SIZE / MINIMAP_TILE;
     map_shift(data); 
     clamp_map(data);
     while (y < MINIMAP_TILE)
@@ -89,7 +96,7 @@ void create_minimap(t_var *data)
         while (x < MINIMAP_TILE)
         {
             draw_map(data, data->minimap_offset_x + x, data->minimap_offset_y + y,
-                        x * data->minimap.tile_size, y * data->minimap.tile_size);
+                        x * MINIMAP_TILE_SIZE, y * MINIMAP_TILE_SIZE);
             x++;
         }
         y++;

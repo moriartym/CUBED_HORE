@@ -28,6 +28,7 @@ int render(t_var *data)
         draw_sprites(data);
         draw_win(data);
         draw_enemies_minimap(data);
+        draw_winning_tile(data);
         mlx_put_image_to_window(data->mlx, data->win, data->image.img, 0, 0);
     }
     return (0);
