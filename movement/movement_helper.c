@@ -25,6 +25,8 @@ int get_front_tile_x(t_var *data)
     int dir_x;
     int tile_in_front_x;
 
+    // baed on the direction
+    // scan 8x32 block each time 4 time
     curr_tile_x = data->player.px / TILE_SIZE;
     curr_tile_y = data->player.py / TILE_SIZE;
     if (is_door(data->map.arr[curr_tile_y][curr_tile_x]))
