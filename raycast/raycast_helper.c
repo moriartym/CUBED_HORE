@@ -52,8 +52,9 @@ void vertical_dof(t_var* data, t_ray* ray)
         ray->sideV = 0;
         if (is_wall(data, ray->mx, ray->my, ray->cur_tile))
         {
-            if (ray->hitTypeV != 'S')
-                ray->hitTypeV = data->big_map[ray->my][ray->mx];
+            ray->hitTypeV = data->big_map[ray->my][ray->mx];
+            if (ray->hitTypeV == DOORH_CLOSE ||  ray->hitTypeV == DOORH_OPEN)
+                ray->hitTypeV = 'S';
             ray->dof = data->big_width;
             ray->vx = ray->rx;
             ray->vy = ray->ry;
@@ -109,8 +110,9 @@ void horizontal_dof(t_var* data, t_ray* ray)
         ray->sideH = 1;
         if (is_wall(data, ray->mx, ray->my, ray->cur_tile))
         {
-            if (ray->hitTypeH != 'S')
-                ray->hitTypeH = data->big_map[ray->my][ray->mx];
+            ray->hitTypeH = data->big_map[ray->my][ray->mx];
+            if (ray->hitTypeH == DOORV_CLOSE || ray->hitTypeH == DOORV_OPEN)
+                ray->hitTypeH = 'S';
             ray->dof = data->big_height;
             ray->disH = sqrt(pow(ray->rx - data->player.px, 2) + pow(ray->ry - data->player.py, 2));
         }

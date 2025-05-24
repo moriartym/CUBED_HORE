@@ -29,6 +29,7 @@ SRCS_NORMAL = get_next_line/get_next_line.c \
 		window/init_enemy.c \
 		window/init_enemy_bfs.c \
 		window/init_retry.c \
+		window/init_big_map.c \
 		minimap/minimap.c \
 		minimap/door_minimap.c \
 		minimap/win_minimap.c \
@@ -47,9 +48,8 @@ SRCS_NORMAL = get_next_line/get_next_line.c \
 		enemy/enemy_move.c \
 		enemy/enemy_unstuck.c \
 		enemy/enemy_unstuck_helper.c \
-		door/door_pos.c \
-		door/door_alpha.c \
 		door/door_create.c \
+		door/door_create_big.c \
 
 OBJS = $(SRCS_NORMAL:.c=.o)
 

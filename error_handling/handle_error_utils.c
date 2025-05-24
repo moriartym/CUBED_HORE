@@ -1,20 +1,9 @@
 #include "../cub3d.h"
 
-void	free_all_door(t_var *data)
+void free_state_images(t_var *data)
 {
-	t_door	*cur;
-	t_door	*next;
-    if (!data->map.doors)
-        return; 
-
-	cur = data->map.doors;
-	while (cur)
-	{
-		next = cur->next;
-		ft_free_ptr((void **)&cur);
-		cur = next;
-	}
-	data->map.doors = NULL;
+	free_single_img((void **)&data->state.win.img, data);
+	free_single_img((void **)&data->state.lose.img, data);
 }
 
 void safe_close(int *fd)

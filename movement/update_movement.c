@@ -26,29 +26,6 @@ void movement_init(t_var *data, t_movestat *movestat)
     movestat->ipy_sub_yo = (data->player.py - movestat->yo) / TILE_SIZE_BIG;
 }
 
-// bool is_valid_movement(t_var *data, char tile, float nextX, float nextY)
-// {
-//     t_door *cur;
-
-//     if (tile == EMPTY_SPACE || tile == WIN_BLOCK || tile == DOORH_OPEN || tile == DOORV_OPEN)
-//         return (true);
-//     else if (tile == WALL)
-//         return (false);
-    
-//     cur = data->map.doors;
-//     while (cur)
-//     {
-//         if (*cur->status == tile)
-//         {
-//             if (nextX  > cur->xStart && nextX  < cur->xEnd &&
-//                 nextY  > cur->yStart && nextY < cur->yEnd)
-//                 return (false);
-//         }
-//         cur = cur->next;
-//     }
-//     return (true);
-// }
-
 bool is_valid_movement(t_var *data, char tile)
 {
     if (tile == EMPTY_SPACE || tile == WIN_BLOCK)

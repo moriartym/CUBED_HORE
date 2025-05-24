@@ -87,7 +87,7 @@ int enemy_size(t_var *data, t_edraw *draw, t_sprite *sp)
     draw->proj_x = (draw->dy * draw->fov_scale / draw->dx) + (WINDOW_WIDTH / 2.0f);
     draw->sprite_height = (SPRITE_SIZE * draw->fov_scale) / draw->dx;
     draw->sprite_size = (int)draw->sprite_height;
-    draw->max_sprite_size = WINDOW_HEIGHT / 2;
+    draw->max_sprite_size = WINDOW_HEIGHT * 0.4;
     draw->lineH = (TILE_SIZE * WINDOW_HEIGHT) / draw->dx;
     if (draw->lineH > WINDOW_HEIGHT)
         draw->lineH = WINDOW_HEIGHT;

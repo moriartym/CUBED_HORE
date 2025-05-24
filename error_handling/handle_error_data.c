@@ -1,11 +1,5 @@
 #include "../cub3d.h"
 
-void free_state_images(t_var *data)
-{
-	free_single_img((void **)&data->state.win.img, data);
-	free_single_img((void **)&data->state.lose.img, data);
-}
-
 void free_enemy_gifs(t_var *data)
 {
 	free_single_img((void **)&data->gif.zero.img, data);
@@ -17,6 +11,14 @@ void free_enemy_gifs(t_var *data)
 	free_single_img((void **)&data->gif.six.img, data);
 	free_single_img((void **)&data->gif.seven.img, data);
 	free_single_img((void **)&data->gif.eight.img, data);
+}
+
+void free_win_gifs(t_var *data)
+{
+	free_single_img((void **)&data->win_gif.zero.img, data);
+	free_single_img((void **)&data->win_gif.one.img, data);
+	free_single_img((void **)&data->win_gif.two.img, data);
+	free_single_img((void **)&data->win_gif.three.img, data);
 }
 void clean_data_texture(t_map *map, t_var *data)
 {
@@ -50,12 +52,13 @@ void close_mlx(t_var *data)
 void clean_data(t_var *data)
 {
 	free_enemy_gifs(data);
+	free_win_gifs(data);
 	free_state_images(data);
 	ft_free_ptr((void **)&data->sprites);
 	free_single_img(&data->image.img, data);
 	clean_data_texture(&data->map, data);
-	free_all_door(data);
 	ft_free_2d(&data->save.map);
 	ft_free_ptr((void **)&data->save.sprites);
+	ft_free_2d(&data->big_map);
 	close_mlx(data);
 }

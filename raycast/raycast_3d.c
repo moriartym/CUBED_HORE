@@ -9,8 +9,6 @@ int get_lineH(float dist, float pa, float ra)
     return (lineH);
 }
 
-
-
 void    init_tile(t_var *data, t_ray *ray, t_tex *tile)
 {
     tile->lineH = get_lineH(ray->disH, data->player.pa, ray->ra);
@@ -40,23 +38,6 @@ void    init_tile(t_var *data, t_ray *ray, t_tex *tile)
             tile->tx = TILE_SIZE - tile->tx - 1;
     }
     tile->tx = tile->tx * TILE_SIZE_TEXTURE / TILE_SIZE;
-
-
-    // if (ray->sideH == 1)
-    // {
-    //     tile->tx = (int)(ray->rx) % TILE_SIZE_BIG;
-    //     if (ray->ra > PI)
-    //         tile->tx = TILE_SIZE_BIG - tile->tx - 1;
-    //     if (ray->ra <= PI && ray->hitTypeH != WALL)
-    //         tile->tx = TILE_SIZE_BIG - tile->tx - 1;
-    // }
-    // else
-    // {
-    //     tile->tx = (int)(ray->ry) % TILE_SIZE_BIG;
-    //     if (ray->ra > PI/2 && ray->ra < 1.5 * PI && ray->hitTypeH == WALL)
-    //         tile->tx = TILE_SIZE_BIG - tile->tx - 1;
-    // }
-    // tile->tx = tile->tx * TILE_SIZE_TEXTURE / TILE_SIZE_BIG;
 }
 
 void draw_3d(t_var *data, t_ray *ray)

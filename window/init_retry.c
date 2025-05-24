@@ -21,7 +21,6 @@ void copy_sprites_save(t_var *data)
 void re_init(t_var *data)
 {
     printf("🕹️ Retry time! 🌟 Reloading assets and 💥 rebooting madness.\n");
-    free_all_door(data);
     ft_free_2d(&data->map.arr);
     data->map.arr = ft_copy_arr(data->save.map); // save copy array first
     if (!data->map.arr)

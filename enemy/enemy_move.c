@@ -1,31 +1,5 @@
 #include "../cub3d.h"
 
-//UPDATE
-bool is_it_door(t_var *data, float x, float y)
-{
-    t_door *cur;
-    int ix;
-    int iy;
-    char tile;
-
-    ix = (int)x / TILE_SIZE;
-    iy = (int)y / TILE_SIZE;
-    if (ix < 0 || ix >= data->map.width || iy < 0 || iy >= data->map.height)
-        return true;
-    tile = data->map.arr[iy][ix];
-    cur = data->map.doors;
-    while (cur)
-    {
-        if (*cur->status == tile)
-        {
-            if (x  > cur->xStart && x < cur->xEnd &&
-                y > cur->yStart && y < cur->yEnd)
-                return (true);
-        }
-        cur = cur->next;
-    }
-    return (false);
-}
 
 int enemy_left(t_var *data, t_sprite *sp)
 {

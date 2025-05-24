@@ -1,5 +1,13 @@
 #include "../cub3d.h"
 
+void load_win_gifs(t_var *data)
+{
+    load_single_image(data, &data->win_gif.zero, "textures/win/sayuri-1.xpm");
+    load_single_image(data, &data->win_gif.one, "textures/win/sayuri-2.xpm");
+    load_single_image(data, &data->win_gif.two, "textures/win/sayuri-3.xpm");
+    load_single_image(data, &data->win_gif.three, "textures/win/sayuri-4.xpm");
+}
+
 void win(t_var *data)
 {
     int px;
@@ -64,6 +72,8 @@ void place_winning_tiles(t_var *data)
     free_enemy_bfs(data, &bfs);
 }
 
+
+
 void draw_win(t_var *data)
 {
     t_edraw draw;
@@ -72,6 +82,15 @@ void draw_win(t_var *data)
     init_enemy_draw(data, &draw);
     if (enemy_size(data, &draw, &data->win_sprite))
         return ;
-    draw.cur_img = &data->map.textures[WIN_TILE].attr;
+    draw.frame = draw.anim_sequence[data->current_anim_index];
+    draw.cur_img = NULL;
+    if (draw.frame % 4 ==  0)
+        draw.cur_img = &data->win_gif.zero;
+    if (draw.frame % 4 ==  1)
+        draw.cur_img = &data->win_gif.one;
+    if (draw.frame % 4 ==  2)
+        draw.cur_img = &data->win_gif.two;
+    if (draw.frame % 4 ==  3)
+        draw.cur_img = &data->win_gif.three;  
     screen_draw(data, &draw);
 }

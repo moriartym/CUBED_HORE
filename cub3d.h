@@ -36,7 +36,7 @@
 #   define WINDOW_WIDTH 1920
 #   define WINDOW_HEIGHT 1088
 # define MINIMAP_SIZE 256
-# define ENEMY_SPEED 0.35f
+# define ENEMY_SPEED 0.3f
 
 // # define MINIMAP_SIZE 128
 // #define WINDOW_WIDTH 960
@@ -51,7 +51,7 @@
 #define EMPTY_COLOR 0x404040
 #define WIN_COLOR 0xFFD700
 #define BLACK_COLOR 0x000000 
-#define DOOR_SIDE_COLOR "242,185,179"
+#define DOOR_SIDE_COLOR "208,138,134"
 
 # define MINIMAP_TILE 8
 
@@ -75,8 +75,8 @@
 #define MAX_DELTA_TIME 0.1
 #define MOUSE_SENSITIVITY 0.1
 
-#define SPRITE_SIZE 10
-#define ENEMY_MARGIN 4.0f
+#define SPRITE_SIZE 8
+#define ENEMY_MARGIN 3.5f
 #define SPRITE_SIZE_MAP 2
 #define ENEMY_COLOR 0xFFFF00
 # define MINIMAP_TILE_SIZE (MINIMAP_SIZE / MINIMAP_TILE)
@@ -143,22 +143,9 @@ typedef struct s_tex
 	int	tile_sz;
 }			t_tex;
 
-typedef struct s_door
-{
-	int		idX;
-	int		idY;
-	char	*status;
-	float xStart;
-	float xEnd;
-	float yStart;
-	float yEnd;
-	struct s_door *next;
-}			t_door;
-
 typedef struct  s_map
 {
     char	**arr;
-    t_door	*doors;
 	char	*name;
     char **temp_arr;
     char *temp_str;
@@ -371,6 +358,14 @@ typedef struct s_gif {
 	t_img eight;
 } t_gif;
 
+typedef struct s_win_gif {
+	t_img zero;
+	t_img one;
+	t_img two;
+	t_img three;
+} t_win_gif;
+
+
 typedef struct s_place {
 	int count;
     int index;
@@ -446,6 +441,7 @@ typedef struct s_var {
 	t_move move;
     t_state state;
 	t_gif gif;
+    t_win_gif win_gif;
 	t_minimap minimap;
 	t_sprite *sprites;
     t_sprite win_sprite; // add this
@@ -513,7 +509,7 @@ void free_enemy_gifs(t_var *data);
 // from handle_error_utils.c
 void free_single_img(void **img_ptr, t_var *data);
 void safe_close(int *fd);
-void	free_all_door(t_var *data);
+void free_win_gifs(t_var *data);
 
 // from handle_error_bfs.c
 void free_enemy_bfs(t_var *data, t_bfs *bfs);
@@ -543,6 +539,7 @@ void show_lose_screen(t_var *data);
 void show_win_screen(t_var *data);
 
 // from init_win.c
+void load_win_gifs(t_var *data);
 void place_winning_tiles(t_var *data);
 void change_to_win(t_var *data, t_bfs *bfs, int index);
 void win(t_var *data);
@@ -565,6 +562,13 @@ void do_bfs(t_var *data, t_bfs *bfs);
 void copy_sprites_save(t_var *data);
 void re_init(t_var *data);
 
+// from init_big_map.c
+
+void init_big_map(t_var *data);
+void create_big_map_helper(t_var *data, int y, int x);
+void create_big_map(t_var *data);
+
+
 /*------------------------------MINIMAP------------------------------*/
 
 // from minimap.c
@@ -580,9 +584,12 @@ void draw_enemies_init(t_var *data, t_emini *mini, int i);
 void draw_enemies_loop(t_var *data, t_emini *mini);
 
 // from door_minimap.c
-void draw_vertical_door(t_img *img, int x, int y, int door_color);
+void draw_horizontal_door_open(t_img *img, int x, int y, int door_color);
+void draw_vertical_door_open(t_img *img, int x, int y, int door_color);
 void draw_horizontal_door(t_img *img, int x, int y, int door_color);
+void draw_vertical_door(t_img *img, int x, int y, int door_color);
 void check_map_door(t_var *data, int x, int y, int draw_x, int draw_y);
+
 
 // froom win_minimap.c
 void draw_one_winning_tile(t_var *data, int draw_x, int draw_y);
@@ -640,7 +647,6 @@ void vertical_dof(t_var* data, t_ray* ray);
 void cast_horizontal (t_var *data, t_ray * ray);
 void horizontal_dof(t_var* data, t_ray* ray);
 bool is_wall(t_var *data, int x, int y, int notWall);
-void adjust_hit_tile(t_var *data, t_ray *ray);
 
 // from textures.c
 void    load_textures(t_var *data);
@@ -652,23 +658,13 @@ int    get_color(int x, int y, t_img *tex);
 
 /*------------------------------DOOR------------------------------*/
 //from door_create.c
-t_door *new_door(t_var *data, int x, int y, char *tile);
-void add_door(t_var *data, int x, int y, char *tile);
-void delete_door(t_var *data, int x, int y);
 void create_door(t_var *data);
 void open_door(t_var *data);
 
-// from door_pos.c
-void translate_ray(t_ray *ray, int side, char c);
-bool is_door_side(t_door *cur, t_ray *ray, int side, char c);
-bool doorv_from_side_check(t_ray *ray, t_door *cur, int side, char c);
-bool doorh_from_side_check(t_ray *ray, t_door *cur, int side, char c);
-bool is_door(t_map *map, t_ray *ray, int side);
-
-// from door_alpha.c
-int check_door_alpha(t_var *data, t_ray ray, int side);
-int check_alpha(t_ray ray, t_tex tile, t_img *tex);
-
+//from door_create_big.c
+void create_door_big_map(t_var *data, int y, int x);
+void delete_door_big_map(t_var *data, int y, int x);
+void update_door_big_map(t_var *data, int y, int x);
 
 /*------------------------------ENEMY------------------------------*/
 
@@ -713,6 +709,4 @@ void draw_sprites(t_var *data);
 
 void print_map_and_enemies(t_var *data);
 
-void create_big_map(t_var *data);
-void create_door_big_map(t_var *data, int y, int x);
 #endif

@@ -51,24 +51,6 @@ void draw_vertical_door_open(t_img *img, int x, int y, int door_color)
     }
 }
 
-
-
-
-void check_map_door(t_var *data, int x, int y, int draw_x, int draw_y)
-{
-    char tile;
-
-    tile = data->map.arr[y][x];
-    if (tile == DOORH_CLOSE)
-        draw_horizontal_door(&data->image, draw_x, draw_y, DOOR_COLOR);
-    else if (tile == DOORV_CLOSE)
-        draw_vertical_door(&data->image, draw_x, draw_y, DOOR_COLOR);
-    else if (tile == DOORH_OPEN)
-        draw_horizontal_door_open(&data->image, draw_x, draw_y, DOOR_OPEN_COLOR);
-    else if (tile == DOORV_OPEN)
-        draw_vertical_door_open(&data->image, draw_x, draw_y, DOOR_OPEN_COLOR);
-}
-
 void draw_horizontal_door(t_img *img, int x, int y, int door_color)
 {
     int by;
@@ -111,4 +93,20 @@ void draw_vertical_door(t_img *img, int x, int y, int door_color)
         }
         by++;
     }
+}
+
+
+void check_map_door(t_var *data, int x, int y, int draw_x, int draw_y)
+{
+    char tile;
+
+    tile = data->map.arr[y][x];
+    if (tile == DOORH_CLOSE)
+        draw_horizontal_door(&data->image, draw_x, draw_y, DOOR_COLOR);
+    else if (tile == DOORV_CLOSE)
+        draw_vertical_door(&data->image, draw_x, draw_y, DOOR_COLOR);
+    else if (tile == DOORH_OPEN)
+        draw_horizontal_door_open(&data->image, draw_x, draw_y, DOOR_OPEN_COLOR);
+    else if (tile == DOORV_OPEN)
+        draw_vertical_door_open(&data->image, draw_x, draw_y, DOOR_OPEN_COLOR);
 }
